@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+  pgdatabase:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: e-Commerce
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    container_name: pgdatabase
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - pgdatabase
+    ports:
+      - 5454:5454/tcp
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@postgres.com
+      - PGADMIN_DEFAULT_PASSWORD=postgres
+      - PGADMIN_LISTEN_PORT=5454
+    restart: unless-stopped
+  backend:
+    build: ./Backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./Backend:/app
+      - /app/node_modules
+    container_name: backend
+    depends_on:
+      - pgdatabase
+    tty: true
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+
+volumes:
+  pgdata:

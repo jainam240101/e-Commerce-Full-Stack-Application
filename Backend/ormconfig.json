@@ -1,0 +1,12 @@
+ {
+  "name": "default",
+  "type": "postgres",
+  "host": "pgdatabase",
+  "port": 5432,
+  "username": "postgres",
+  "password": "postgres",
+  "database": "e-Commerce",
+  "synchronize": true,
+  "Logging": true,
+  "entities": [ "src/entity/*.*"]
+}
